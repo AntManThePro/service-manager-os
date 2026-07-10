@@ -1,0 +1,9 @@
+{
+  "name": "Hood Boss Service Manager OS",
+  "short_name": "HB Manager OS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06100d",
+  "theme_color": "#00ff87",
+  "description": "Buda Operations * Leadership Cockpit * Built for Anthony"
+}

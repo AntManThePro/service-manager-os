@@ -1,52 +1,186 @@
-HOOD BOSS OPERATIONS INTELLIGENCE
-HOOD BOSS // SERVICE MANAGER OS
-Buda Operations * Leadership Cockpit * Built for Anthony
-LOCKED Unlock editing Lock
-Week Completion0%Mission tasks complete
-Crew Visits0Target 6+
-Coaching Logged0This week
-Open Actions0Needs follow-up
-WEEKLY OPERATING RHYTHM
-Mission Board
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#00ff87" />
+  <title>Hood Boss // Service Manager OS</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">HOOD BOSS OPERATIONS INTELLIGENCE</p>
+        <h1>HOOD BOSS // SERVICE MANAGER OS</h1>
+        <p class="subtitle">Buda Operations * Leadership Cockpit * Built for Anthony</p>
+      </div>
+      <div class="auth-box">
+        <span id="lockState" class="status-badge locked">LOCKED</span>
+        <button id="unlockBtn" class="btn ghost">Unlock editing</button>
+        <button id="lockBtn" class="btn ghost hidden">Lock</button>
+      </div>
+    </header>
 
+    <section class="metrics">
+      <article class="metric"><span>Week Completion</span><strong id="weekPct">0%</strong><small>Mission tasks complete</small></article>
+      <article class="metric"><span>Crew Visits</span><strong id="visitsMetric">0</strong><small>Target 6+</small></article>
+      <article class="metric"><span>Coaching Logged</span><strong id="coachMetric">0</strong><small>This week</small></article>
+      <article class="metric"><span>Open Actions</span><strong id="actionsMetric">0</strong><small>Needs follow-up</small></article>
+    </section>
 
+    <main class="main-grid">
+      <section class="card mission-card">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">WEEKLY OPERATING RHYTHM</p>
+            <h2>Mission Board</h2>
+          </div>
+          <span id="todayLabel" class="muted"></span>
+        </div>
+        <div id="dayStrip" class="day-strip"></div>
+        <div id="alternateWednesdayBanner" class="alert info hidden"></div>
+        <article class="mission-brief">
+          <span id="missionLabel" class="mission-label"></span>
+          <h3 id="missionHeadline"></h3>
+          <p id="missionDetail"></p>
+        </article>
+        <div id="taskList" class="task-list"></div>
+      </section>
 
+      <aside class="right-column">
+        <section class="card">
+          <div class="section-head"><h2>Quick Capture</h2><span class="muted">Password protected</span></div>
+          <div class="quick-grid">
+            <button class="quick-card" data-tab="coaching"><strong>Log Coaching</strong><small>Employee, topic, follow-up</small></button>
+            <button class="quick-card" data-tab="visits"><strong>Log Crew Visit</strong><small>QA, safety, efficiency</small></button>
+            <button class="quick-card" data-tab="interviews"><strong>Add Interview</strong><small>Candidate pipeline</small></button>
+            <button class="quick-card" data-tab="actions"><strong>Add Action</strong><small>Owner, priority, due date</small></button>
+          </div>
+        </section>
 
+        <section class="card">
+          <div class="section-head"><h2>Leadership Pulse</h2></div>
+          <div class="score-grid">
+            <div class="score-box"><strong id="pulsePeople">0</strong><span>People</span></div>
+            <div class="score-box"><strong id="pulseField">0</strong><span>Field</span></div>
+            <div class="score-box"><strong id="pulseSystem">0</strong><span>Systems</span></div>
+          </div>
+          <div class="progress-block"><label>Crew visits <b id="visitKpi">0/6</b></label><div class="progress"><i id="visitBar"></i></div></div>
+          <div class="progress-block"><label>Coaching <b id="coachKpi">0/8</b></label><div class="progress"><i id="coachBar"></i></div></div>
+          <div class="progress-block"><label>Interviews <b id="intKpi">0/3</b></label><div class="progress"><i id="intBar"></i></div></div>
+        </section>
 
-Quick Capture
-Password protected
-Log CoachingEmployee, topic, follow-up Log Crew VisitQA, safety, efficiency Add InterviewCandidate pipeline Add ActionOwner, priority, due date
-Leadership Pulse
-0People
-0Field
-0Systems
-Crew visits 0/6
+        <section class="card">
+          <div class="section-head"><h2>Next Focus</h2></div>
+          <p id="focusText" class="focus-text">Complete mission tasks and capture field activity to generate your next focus.</p>
+        </section>
+      </aside>
+    </main>
 
-Coaching 0/8
+    <section class="card workspace">
+      <div class="tabs">
+        <button class="tab active" data-tab="activity">Activity</button>
+        <button class="tab" data-tab="coaching">Coaching</button>
+        <button class="tab" data-tab="visits">Crew Visits</button>
+        <button class="tab" data-tab="interviews">Interviews</button>
+        <button class="tab" data-tab="actions">Actions</button>
+        <button class="tab" data-tab="review">Weekly Review</button>
+      </div>
 
-Interviews 0/3
+      <div id="panel-activity" class="panel active"><div id="activityList" class="entry-list"></div></div>
 
-Next Focus
-Complete mission tasks and capture field activity to generate your next focus.
-Activity Coaching Crew Visits Interviews Actions Weekly Review
+      <div id="panel-coaching" class="panel">
+        <form id="coachingForm" class="entry-form">
+          <input type="hidden" id="coachingId" />
+          <div class="form-grid">
+            <label>Employee / Crew<input id="coachName" required placeholder="Name or crew ID" /></label>
+            <label>Topic<select id="coachTopic"><option>Performance</option><option>Safety</option><option>Quality</option><option>Attendance</option><option>Leadership</option><option>Customer Service</option></select></label>
+          </div>
+          <label>Notes<textarea id="coachNotes" placeholder="Conversation, commitments, next step"></textarea></label>
+          <label>Follow-up date<input id="coachFollow" type="date" /></label>
+          <div class="form-actions"><button class="btn primary" type="submit">Save coaching record</button><button type="button" class="btn ghost cancel-edit hidden" data-kind="coaching">Cancel edit</button></div>
+        </form>
+        <div id="coachingList" class="entry-list"></div>
+      </div>
 
-Employee / Crew TopicPerformanceSafetyQualityAttendanceLeadershipCustomer Service
-Notes Follow-up date
-Save coaching recordCancel edit
+      <div id="panel-visits" class="panel">
+        <form id="visitForm" class="entry-form">
+          <input type="hidden" id="visitId" />
+          <div class="form-grid">
+            <label>Crew ID / Names<input id="visitCrew" required placeholder="Crew ID or names" /></label>
+            <label>Focus<select id="visitFocus"><option>QA</option><option>Safety</option><option>Efficiency</option><option>Training</option><option>Equipment</option><option>Morale</option></select></label>
+          </div>
+          <label>Observations<textarea id="visitNotes" placeholder="Observations, corrections, wins, follow-up"></textarea></label>
+          <div class="form-actions"><button class="btn primary" type="submit">Save crew visit</button><button type="button" class="btn ghost cancel-edit hidden" data-kind="visit">Cancel edit</button></div>
+        </form>
+        <div id="visitsList" class="entry-list"></div>
+      </div>
 
-Crew ID / Names FocusQASafetyEfficiencyTrainingEquipmentMorale
-Observations
-Save crew visitCancel edit
+      <div id="panel-interviews" class="panel">
+        <form id="candidateForm" class="entry-form">
+          <input type="hidden" id="candidateId" />
+          <div class="form-grid">
+            <label>Candidate<input id="candName" required placeholder="Candidate name" /></label>
+            <label>Status<select id="candStatus"><option>Scheduled</option><option>Interviewed</option><option>Second Review</option><option>Offer</option><option>Hold</option><option>Declined</option></select></label>
+          </div>
+          <label>Notes<textarea id="candNotes" placeholder="Strengths, concerns, availability, next step"></textarea></label>
+          <div class="form-actions"><button class="btn primary" type="submit">Save candidate</button><button type="button" class="btn ghost cancel-edit hidden" data-kind="candidate">Cancel edit</button></div>
+        </form>
+        <div id="candidateList" class="entry-list"></div>
+      </div>
 
-Candidate StatusScheduledInterviewedSecond ReviewOfferHoldDeclined
-Notes
-Save candidateCancel edit
+      <div id="panel-actions" class="panel">
+        <form id="actionForm" class="entry-form">
+          <input type="hidden" id="actionId" />
+          <div class="form-grid">
+            <label>Action item<input id="actionTitle" required placeholder="What needs to happen?" /></label>
+            <label>Owner<input id="actionOwner" placeholder="Anthony, Team Lead, Office..." /></label>
+            <label>Due date<input id="actionDue" type="date" /></label>
+            <label>Priority<select id="actionPriority"><option>High</option><option>Medium</option><option>Low</option></select></label>
+          </div>
+          <div class="form-actions"><button class="btn primary" type="submit">Save action</button><button type="button" class="btn ghost cancel-edit hidden" data-kind="action">Cancel edit</button></div>
+        </form>
+        <div id="actionList" class="entry-list"></div>
+      </div>
 
-Action item Owner Due date PriorityHighMediumLow
-Save actionCancel edit
+      <div id="panel-review" class="panel">
+        <form id="reviewForm" class="entry-form">
+          <input type="hidden" id="reviewId" />
+          <div class="form-grid">
+            <label>Revenue<input id="wrRevenue" placeholder="$118,000" /></label>
+            <label>Labor %<input id="wrLabor" placeholder="28.7%" /></label>
+            <label>QA audits<input id="wrQa" type="number" min="0" /></label>
+            <label>Escalations closed<input id="wrEsc" type="number" min="0" /></label>
+          </div>
+          <label>Review notes<textarea id="wrNotes" placeholder="What changed, what worked, what must change next week?"></textarea></label>
+          <div class="form-actions"><button class="btn primary" type="submit">Save weekly review</button><button type="button" class="btn ghost cancel-edit hidden" data-kind="weekly_review">Cancel edit</button></div>
+        </form>
+        <div id="reviewList" class="entry-list"></div>
+      </div>
+    </section>
 
-Revenue Labor % QA audits Escalations closed
-Review notes
-Save weekly reviewCancel edit
+    <footer class="footer">
+      <span>I = Nexus / AntManThePro</span>
+      <small>Hood Boss Service Manager OS • Buda Operations</small>
+    </footer>
+  </div>
 
-I = Nexus / AntManThePro Hood Boss Service Manager OS • Buda Operations
+  <dialog id="authDialog">
+    <form id="authForm" method="dialog" class="dialog-card">
+      <p class="eyebrow">EDIT CONTROL</p>
+      <h2 id="authTitle">Unlock editing</h2>
+      <p id="authHelp" class="muted">Enter the password to edit schedule tasks and records.</p>
+      <input id="passwordInput" type="password" minlength="8" required autocomplete="current-password" placeholder="Password" />
+      <p id="authError" class="error"></p>
+      <div class="form-actions">
+        <button id="authSubmit" class="btn primary" type="submit">Unlock</button>
+        <button id="authCancel" class="btn ghost" type="button">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

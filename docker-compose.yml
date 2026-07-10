@@ -1,0 +1,15 @@
+services:
+  hood-boss-ops:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - hood_boss_data:/data
+    restart: unless-stopped
+
+volumes:
+  hood_boss_data:
